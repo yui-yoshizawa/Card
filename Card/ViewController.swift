@@ -75,6 +75,9 @@ class ViewController: UIViewController {
     // 「いいね」をされた名前の配列
     var likedName: [String] = []
     
+    // 飛ばしたカード数カウント
+    var swipeCount = 0
+    
     // viewのレイアウト処理が完了した時に呼ばれる
     override func viewDidLayoutSubviews() {
         // ベースカードの中心を代入
@@ -179,11 +182,13 @@ class ViewController: UIViewController {
                 likeImage.isHidden = true
                 // 次のカードへ
                 selectedCardCount += 1
-
-                if selectedCardCount >= personList.count {
+                // 飛ばした数を +1
+                swipeCount += 1
+                if swipeCount >= nameList.count {
                     // 遷移処理
                     performSegue(withIdentifier: "ToLikedList", sender: self)
                 }
+                selectedCardCount = swipeCount % 2    // わからん
 
             } else if card.center.x > self.view.frame.width - 50 {
                 // 右に大きくスワイプしたときの処理
@@ -193,6 +198,8 @@ class ViewController: UIViewController {
                 self.personList[self.selectedCardCount].center = CGPoint(x: self.personList[self.selectedCardCount].center.x + 500, y :self.personList[self.selectedCardCount].center.y)
 
                 })
+                // さよならしたカードを最背面の元の場所に持ってくる
+                camonCard()
                 // ベースカードの角度と位置を戻す
                 resetCard()
                 // likeImageを隠す
@@ -201,11 +208,14 @@ class ViewController: UIViewController {
                 likedName.append(nameList[selectedCardCount])
                 // 次のカードへ
                 selectedCardCount += 1
+                // 飛ばしたカード数を +1
+                swipeCount += 1
                 
-                if selectedCardCount >= personList.count {
+                if swipeCount >= nameList.count {
                     // 遷移処理
                     performSegue(withIdentifier: "ToLikedList", sender: self)
                 }
+                selectedCardCount = swipeCount % 2
 
             } else {
                 // アニメーションをつける
@@ -232,6 +242,36 @@ class ViewController: UIViewController {
         // 角度を戻す
         personList[selectedCardCount].transform = .identity
     }
+    
+    //
+    func checkUserCard() {
+        // 表示されているカードの名前を保管
+        let name: String = nameList[swipeCount + 2]
+        // 表示するビューを管理する
+        if selectedCardCount == 0 {
+            // ビューの背景に色をつける
+            person1.backgroundColor = backgroundColor["\(name)"]
+            // ラベルに名前を表示
+            personName1.text = name
+            // ラベルに職業を表示
+            personProfession1.text = professionList["\(name)"]
+            // ラベルに出身地を表示
+            personHometown1.text = hometownList["\(name)"]
+            // 画像を表示
+            personImage1.image = UIImage(named: "\(name)")
+        } else {
+            // ビューの背景に色をつける
+            person2.backgroundColor = backgroundColor["\(name)"]
+            // ラベルに名前を表示
+            personName2.text = name
+            // ラベルに職業を表示
+            personProfession2.text = professionList["\(name)"]
+            // ラベルに出身地を表示
+            personHometown2.text = hometownList["\(name)"]
+            // 画像を表示
+            personImage2.image = UIImage(named: "\(name)")
+        }
+    }
 
     // よくないねボタン
     @IBAction func dislikeButtonTapped(_ sender: Any) {
@@ -244,10 +284,12 @@ class ViewController: UIViewController {
         })
 
         selectedCardCount += 1
+        swipeCount += 1
         // 画面遷移
-        if selectedCardCount >= personList.count {
+        if swipeCount >= nameList.count {
             performSegue(withIdentifier: "ToLikedList", sender: self)
         }
+        selectedCardCount = swipeCount % 2
     }
 
     // いいねボタン
@@ -259,11 +301,12 @@ class ViewController: UIViewController {
         })
         // いいねリストに追加
         likedName.append(nameList[selectedCardCount])
-        selectedCardCount += 1
+        swipeCount += 1
         // 画面遷移
-        if selectedCardCount >= personList.count {
+        if swipeCount >= nameList.count {
             performSegue(withIdentifier: "ToLikedList", sender: self)
         }
+        selectedCardCount = swipeCount % 2
     }
 }
 
