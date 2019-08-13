@@ -240,74 +240,74 @@ class ViewController: UIViewController {
         
         // 【カードを飛ばすかどうか】について
         if sender.state == UIGestureRecognizer.State.ended {
-            // 【カードを左に飛ばす場合】
             if card.center.x < 50 {
-                // 1. 飛ばすカードについての処理    personList[selectedCardCount] というカード
-                // 1-1. 左に飛ばす（物理）
+                // 【カードを左に飛ばす場合】
+                // 1. カードを左に飛ばす（物理） personList[selectedCardCount] というカード
                 UIView.animate(withDuration: 0.5, animations: {
                     self.personList[self.selectedCardCount].center = CGPoint(x: self.personList[self.selectedCardCount].center.x - 500, y :self.personList[self.selectedCardCount].center.y)
                 })
-                // 5. 遷移するかどうか判定するためのカウントを　+1
+                // 2. 遷移するかどうか判定するためのカウントを　+1
                 count += 1
-                // 6. 遷移するかどうか判定
+                // 3. 遷移するかどうか判定
                 if count >= nameList.count {
                     // 遷移する場合の処理
                     performSegue(withIdentifier: "ToLikedList", sender: self)
                 } else {
                     // 遷移しない場合
-                    // 1-2. 飛ばしたカードを最背面の元の場所に持ってくる
+                    // 1. 飛ばしたカードを最背面の元の場所に持ってくる
                     camonCard()
                     
-                    // 1-3. 最背面に行ったカードに、次表示する情報を入れる
+                    // 2. 最背面に行ったカードに、次表示する情報を入れる
                     newCard()
                     
-                    // 2. ベースカードの角度と位置を戻す処理
+                    // 3. ベースカードの角度と位置を戻す処理
                     resetCard()
                     
-                    // 3. likeImageを隠す処理
+                    // 4. likeImageを隠す処理
                     likeImage.isHidden = true
                     
-                    // 次のカードへ
+                    // 5. 次のカードへ
                     listNum += 1    // 次のカードのリスト番号
                     nextListNum += 1    // 次のカードが最背面に行った時のリスト番号
                     selectedCardCount += 1
                     selectedCardCount = count % 2    // 次のカード番号。0か1にしたいので2で割ったあまりにする。
                 }
                
-                
-                
-                
-                
-                
 
             } else if card.center.x > self.view.frame.width - 50 {
-                // 右に大きくスワイプしたときの処理
+                // 【カードを右に飛ばす場合】
+                // 1. カードを右に飛ばす
                 UIView.animate(withDuration: 0.5, animations: {
-                    // 右へ飛ばす場合
-                    // X座標を右に500とばす(+500)
                 self.personList[self.selectedCardCount].center = CGPoint(x: self.personList[self.selectedCardCount].center.x + 500, y :self.personList[self.selectedCardCount].center.y)
-
                 })
-                // さよならしたカードを最背面の元の場所に持ってくる
-                camonCard()
-                
-                //checkUserCard()
-                // ベースカードの角度と位置を戻す
-                resetCard()
-                // likeImageを隠す
-                likeImage.isHidden = true
                 // いいねリストに追加
-                likedName.append(nameList[selectedCardCount])
-                // 次のカードへ
-                selectedCardCount += 1
-                // 飛ばしたカード数を +1
+                likedName.append(nameList[listNum])
+                // 2. 遷移するかどうか判定するためのカウントを　+1
                 count += 1
-                
+                // 3. 遷移するかどうか判定
                 if count >= nameList.count {
-                    // 遷移処理
+                    // 遷移する場合の処理
                     performSegue(withIdentifier: "ToLikedList", sender: self)
+                } else {
+                    // 遷移しない場合
+                    // 1. 飛ばしたカードを最背面の元の場所に持ってくる
+                    camonCard()
+                    
+                    // 2. 最背面に行ったカードに、次表示する情報を入れる
+                    newCard()
+                    
+                    // 3. ベースカードの角度と位置を戻す処理
+                    resetCard()
+                    
+                    // 4. likeImageを隠す処理
+                    likeImage.isHidden = true
+                    
+                    // 5. 次のカードへ
+                    listNum += 1    // 次のカードのリスト番号
+                    nextListNum += 1    // 次のカードが最背面に行った時のリスト番号
+                    selectedCardCount += 1
+                    selectedCardCount = count % 2    // 次のカード番号。0か1にしたいので2で割ったあまりにする。
                 }
-                selectedCardCount = count % 2
 
             } else {
                 // ☆【カードを飛ばさない場合】
