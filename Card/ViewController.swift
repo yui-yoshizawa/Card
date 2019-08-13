@@ -247,67 +247,37 @@ class ViewController: UIViewController {
                 UIView.animate(withDuration: 0.5, animations: {
                     self.personList[self.selectedCardCount].center = CGPoint(x: self.personList[self.selectedCardCount].center.x - 500, y :self.personList[self.selectedCardCount].center.y)
                 })
-                // 1-2. 飛ばしたカードを最背面の元の場所に持ってくる
-                camonCard()
-                
-                // 1-3. 最背面に行ったカード配列の番号を +1
-                selectedCardCount += 1
-                selectedCardCount = count % 2
-                
-                // 1-4. 最背面に行ったカードに、次表示する情報を入れる
-                
-                if nextListNum < nameList.count {
-                    // まだ表示するリストがある場合
-                    let name: String = nameList[nextListNum]
-                    // 表示するビューを管理する
-                    if selectedCardCount == 0 {
-                        // ビューの背景に色をつける
-                        person1.backgroundColor = backgroundColor["\(name)"]
-                        // ラベルに名前を表示
-                        personName1.text = name
-                        // ラベルに職業を表示
-                        personProfession1.text = professionList["\(name)"]
-                        // ラベルに出身地を表示
-                        personHometown1.text = hometownList["\(name)"]
-                        // 画像を表示
-                        personImage1.image = UIImage(named: "\(name)")
-                    } else {
-                        // ビューの背景に色をつける
-                        person2.backgroundColor = backgroundColor["\(name)"]
-                        // ラベルに名前を表示
-                        personName2.text = name
-                        // ラベルに職業を表示
-                        personProfession2.text = professionList["\(name)"]
-                        // ラベルに出身地を表示
-                        personHometown2.text = hometownList["\(name)"]
-                        // 画像を表示
-                        personImage2.image = UIImage(named: "\(name)")
-                    }
-                } else {
-                    // ここにいい感じの処理を
-                }
-                
-                // 2. ベースカードの角度と位置を戻す処理
-                resetCard()
-                
-                // 3. likeImageを隠す処理
-                likeImage.isHidden = true
-                
                 // 5. 遷移するかどうか判定するためのカウントを　+1
                 count += 1
-                
                 // 6. 遷移するかどうか判定
                 if count >= nameList.count {
                     // 遷移する場合の処理
                     performSegue(withIdentifier: "ToLikedList", sender: self)
                 } else {
                     // 遷移しない場合
+                    // 1-2. 飛ばしたカードを最背面の元の場所に持ってくる
+                    camonCard()
+                    
+                    // 1-3. 最背面に行ったカードに、次表示する情報を入れる
+                    newCard()
+                    
+                    // 2. ベースカードの角度と位置を戻す処理
+                    resetCard()
+                    
+                    // 3. likeImageを隠す処理
+                    likeImage.isHidden = true
+                    
                     // 次のカードへ
-                    listNum += 1
-                    nextListNum += 1
+                    listNum += 1    // 次のカードのリスト番号
+                    nextListNum += 1    // 次のカードが最背面に行った時のリスト番号
                     selectedCardCount += 1
-                    selectedCardCount = count % 2    // 0か1にしたいので2で割ったあまりにする。
+                    selectedCardCount = count % 2    // 次のカード番号。0か1にしたいので2で割ったあまりにする。
                 }
+               
+                
+                
+                
+                
                 
 
             } else if card.center.x > self.view.frame.width - 50 {
@@ -356,7 +326,7 @@ class ViewController: UIViewController {
         }
     }
     
-    //  さよならしたカードを最背面の元の場所に持ってくる処理
+    // さよならしたカードを最背面の元の場所に持ってくる処理
     func camonCard() {
         // 最背面に
         self.view.sendSubviewToBack(personList[selectedCardCount])
@@ -366,9 +336,43 @@ class ViewController: UIViewController {
         personList[selectedCardCount].transform = .identity
     }
     
+    // 最背面に行ったカードに、次表示する情報を入れる処理
+    func newCard() {
+        if nextListNum < nameList.count {
+            // まだ表示するリストがある場合
+            let name: String = nameList[nextListNum]
+            // 表示するビューを管理する
+            if selectedCardCount == 0 {
+                // ビューの背景に色をつける
+                person1.backgroundColor = backgroundColor["\(name)"]
+                // ラベルに名前を表示
+                personName1.text = name
+                // ラベルに職業を表示
+                personProfession1.text = professionList["\(name)"]
+                // ラベルに出身地を表示
+                personHometown1.text = hometownList["\(name)"]
+                // 画像を表示
+                personImage1.image = UIImage(named: "\(name)")
+            } else {
+                // ビューの背景に色をつける
+                person2.backgroundColor = backgroundColor["\(name)"]
+                // ラベルに名前を表示
+                personName2.text = name
+                // ラベルに職業を表示
+                personProfession2.text = professionList["\(name)"]
+                // ラベルに出身地を表示
+                personHometown2.text = hometownList["\(name)"]
+                // 画像を表示
+                personImage2.image = UIImage(named: "\(name)")
+            }
+        } else {
+            // ここにいい感じの処理を
+        }
+    }
     
     
-    //
+    
+    
    
 
     // よくないねボタン
