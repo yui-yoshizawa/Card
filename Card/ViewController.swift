@@ -14,13 +14,21 @@ class ViewController: UIViewController {
     @IBOutlet weak var baseCard: UIView!
     // スワイプ中にgood or bad の表示
     @IBOutlet weak var likeImage: UIImageView!
-    // ユーザーカード
+    
+    // ユーザーカード1
     @IBOutlet weak var person1: UIView!
+    @IBOutlet weak var personImage1: UIImageView!
+    @IBOutlet weak var personName1: UILabel!
+    @IBOutlet weak var personProfession1: UILabel!
+    @IBOutlet weak var personHometown1: UILabel!
+    
+    // ユーザーカード2
     @IBOutlet weak var person2: UIView!
-    @IBOutlet weak var person3: UIView!
-    @IBOutlet weak var person4: UIView!
-    @IBOutlet weak var person5: UIView!
-
+    @IBOutlet weak var personImage2: UIImageView!
+    @IBOutlet weak var personName2: UILabel!
+    @IBOutlet weak var personProfession2: UILabel!
+    @IBOutlet weak var personHometown2: UILabel!
+    
     // ベースカードの中心
     var centerOfCard: CGPoint!
     // ユーザーカードの配列
@@ -28,11 +36,45 @@ class ViewController: UIViewController {
     // 選択されたカードの数
     var selectedCardCount: Int = 0
     // ユーザーリスト
+  /*  let nameList: [[String: String]] = [
+        ["personImage": "津田梅子", "personName": "津田梅子", "personProfession": "教師", "personHometown": "千葉"],
+        ["personImage": "ガリレオガリレイ", "personName": "ガリレオガリレイ", "personProfession": "物理学者", "personHometown": "イタリア"],
+        ["personImage": "ジョージワシントン", "personName": "ジョージワシントン", "personProfession": "大統領", "personHometown": "アメリカ"],
+        
+        ["personImage": "板垣退助", "personName": "板垣退助", "personProfession": "議員", "personHometown": "高知"],
+        ["personImage": "ジョン万次郎", "personName": "ジョン万次郎", "personProfession": "冒険家", "personHometown": "アメリカ"]
+    ]
+  */
+    
     let nameList: [String] = ["津田梅子","ジョージワシントン","ガリレオガリレイ","板垣退助","ジョン万次郎"]
+    
+    let professionList: [String: String] = [
+        "津田梅子": "教師",
+        "ジョージワシントン": "大統領",
+        "ガリレオガリレイ": "物理学者",
+        "板垣退助": "議員",
+        "ジョン万次郎": "冒険家"
+    ]
+    
+    let hometownList: [String: String] = [
+        "津田梅子": "千葉",
+        "ジョージワシントン": "アメリカ",
+        "ガリレオガリレイ": "イタリア",
+        "板垣退助": "高知",
+        "ジョン万次郎": "アメリカ"
+    ]
+    
+    let backgroundColor: [String: UIColor] = [
+        "津田梅子": #colorLiteral(red: 1, green: 0.8118392295, blue: 0.7754601246, alpha: 1),
+        "ガリレオガリレイ": #colorLiteral(red: 0.8675404454, green: 1, blue: 0.8697308093, alpha: 1),
+        "ジョージワシントン": #colorLiteral(red: 0.9836079141, green: 1, blue: 0.8185359941, alpha: 1),
+        "板垣退助": #colorLiteral(red: 0.7297981346, green: 0.9208318677, blue: 1, alpha: 1),
+        "ジョン万次郎": #colorLiteral(red: 0.9821062897, green: 0.8366400532, blue: 1, alpha: 1)
+    ]
+    
     // 「いいね」をされた名前の配列
     var likedName: [String] = []
-
-
+    
     // viewのレイアウト処理が完了した時に呼ばれる
     override func viewDidLayoutSubviews() {
         // ベースカードの中心を代入
@@ -42,15 +84,12 @@ class ViewController: UIViewController {
     // ロード完了時に呼ばれる
     override func viewDidLoad() {
         super.viewDidLoad()
-        // personListにperson1から5を追加
+        // personListにperson1, 2を追加
         personList.append(person1)
         personList.append(person2)
-        personList.append(person3)
-        personList.append(person4)
-        personList.append(person5)
     }
 
-    // view表示前に呼ばれる（遷移すると戻ってくる度によばれる）
+    // view表示前に呼ばれる（遷移すると戻ってくる度によばれる）    ??
     override func viewWillAppear(_ animated: Bool) {
         // カウント初期化
         selectedCardCount = 0
@@ -69,7 +108,7 @@ class ViewController: UIViewController {
         }
     }
 
-    // 完全に遷移が行われ、スクリーン上からViewControllerが表示されなくなったときに呼ばれる
+    // 完全に遷移が行われ、スクリーン上からViewControllerが表示されなくなったときに呼ばれる    ??
     override func viewDidDisappear(_ animated: Bool) {
         // ユーザーカードを元に戻す
         resetPersonList()
@@ -92,7 +131,7 @@ class ViewController: UIViewController {
         baseCard.transform = .identity
     }
 
-    // スワイプ処理
+    // スワイプ処理    ??
     @IBAction func swipeCard(_ sender: UIPanGestureRecognizer) {
 
         // ベースカード
@@ -129,9 +168,11 @@ class ViewController: UIViewController {
                 UIView.animate(withDuration: 0.5, animations: {
                     // 左へ飛ばす場合
                     // X座標を左に500とばす(-500)
+                    // 画面外にさようなら
                     self.personList[self.selectedCardCount].center = CGPoint(x: self.personList[self.selectedCardCount].center.x - 500, y :self.personList[self.selectedCardCount].center.y)
-
                 })
+                // さよならしたカードを最背面の元の場所に持ってくる
+                camonCard()
                 // ベースカードの角度と位置を戻す
                 resetCard()
                 // likeImageを隠す
@@ -180,6 +221,16 @@ class ViewController: UIViewController {
                 })
             }
         }
+    }
+    
+    //  さよならしたカードを最背面の元の場所に持ってくる処理
+    func camonCard() {
+        // 最背面に
+        self.view.sendSubviewToBack(personList[selectedCardCount])
+        // 位置を戻す
+        personList[selectedCardCount].center = centerOfCard
+        // 角度を戻す
+        personList[selectedCardCount].transform = .identity
     }
 
     // よくないねボタン
