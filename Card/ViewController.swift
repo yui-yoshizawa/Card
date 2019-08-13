@@ -89,7 +89,6 @@ class ViewController: UIViewController {
         selectedCardCount = 0
         // リスト初期化
         likedName = []
-        // 二枚のビューを初期化
         // 前面のビュー
         let name1 = nameList[count]
         // ビューの背景に色をつける
@@ -121,49 +120,22 @@ class ViewController: UIViewController {
     override func viewDidLayoutSubviews() {
         // ベースカードの中心を代入
         centerOfCard = baseCard.center
-        
     }
     
     // ☆？完全に遷移が行われ、スクリーン上からViewControllerが表示されなくなったときに呼ばれる
     override func viewDidDisappear(_ animated: Bool) {
-        // カウント初期化
+        // カードの番号
         selectedCardCount = 0
-        count = 0
-        
-        // リスト初期化
+        // リストの番号
+        listNum = 0
+        // 最背面に行った時のリストの番号
+        nextListNum = 2
+        // いいねリスト初期化
         likedName = []
-        
-        // ビューを整理
+        // 遷移するかどうか判定するカウント
+        count = 0
+        // person2を最背面にする
         self.view.sendSubviewToBack(person2)
-        // alpha値を元に戻す
-        person2.alpha = 1
-        
-        // 二枚のビューを初期化
-        // 前面のビュー
-        let name1 = nameList[count]
-        // ビューの背景に色をつける
-        person1.backgroundColor = backgroundColor["\(name1)"]
-        // ラベルに名前を表示
-        personName1.text = name1
-        // ラベルに職業を表示
-        personProfession1.text = professionList["\(name1)"]
-        // ラベルに出身地を表示
-        personHometown1.text = hometownList["\(name1)"]
-        // 画像を表示
-        personImage1.image = UIImage(named: "\(name1)")
-        
-        // 背面のビュー
-        let name2 = nameList[count + 1]
-        // ビューの背景に色をつける
-        person2.backgroundColor = backgroundColor["\(name2)"]
-        // ラベルに名前を表示
-        personName2.text = name2
-        // ラベルに職業を表示
-        personProfession2.text = professionList["\(name2)"]
-        // ラベルに出身地を表示
-        personHometown2.text = hometownList["\(name2)"]
-        // 画像を表示
-        personImage2.image = UIImage(named: "\(name2)")
     }
     
     
@@ -246,33 +218,28 @@ class ViewController: UIViewController {
                 UIView.animate(withDuration: 0.5, animations: {
                     self.personList[self.selectedCardCount].center = CGPoint(x: self.personList[self.selectedCardCount].center.x - 500, y :self.personList[self.selectedCardCount].center.y)
                 })
-                // 2. 遷移するかどうか判定するためのカウントを　+1
+                // 1. 飛ばしたカードを最背面の元の場所に持ってくる
+                camonCard()
+                // 2. 最背面に行ったカードに、次表示する情報を入れる
+                newCard()
+                // 3. ベースカードの角度と位置を戻す処理
+                resetCard()
+                // 4. likeImageを隠す処理
+                likeImage.isHidden = true
+                // 5. 遷移するかどうか判定するためのカウントを　+1
                 count += 1
-                // 3. 遷移するかどうか判定
+                // 6. 遷移するかどうか判定
                 if count >= nameList.count {
                     // 遷移する場合の処理
                     performSegue(withIdentifier: "ToLikedList", sender: self)
                 } else {
                     // 遷移しない場合
-                    // 1. 飛ばしたカードを最背面の元の場所に持ってくる
-                    camonCard()
-                    
-                    // 2. 最背面に行ったカードに、次表示する情報を入れる
-                    newCard()
-                    
-                    // 3. ベースカードの角度と位置を戻す処理
-                    resetCard()
-                    
-                    // 4. likeImageを隠す処理
-                    likeImage.isHidden = true
-                    
-                    // 5. 次のカードへ
+                    // 次のカードへ
                     listNum += 1    // 次のカードのリスト番号
                     nextListNum += 1    // 次のカードが最背面に行った時のリスト番号
                     selectedCardCount += 1
                     selectedCardCount = count % 2    // 次のカード番号。0か1にしたいので2で割ったあまりにする。
                 }
-                
                 
             } else if card.center.x > self.view.frame.width - 50 {
                 // 【カードを右に飛ばす場合】
@@ -282,27 +249,23 @@ class ViewController: UIViewController {
                 })
                 // いいねリストに追加
                 likedName.append(nameList[listNum])
-                // 2. 遷移するかどうか判定するためのカウントを　+1
+                // 1. 飛ばしたカードを最背面の元の場所に持ってくる
+                camonCard()
+                // 2. 最背面に行ったカードに、次表示する情報を入れる
+                newCard()
+                // 3. ベースカードの角度と位置を戻す処理
+                resetCard()
+                // 4. likeImageを隠す処理
+                likeImage.isHidden = true
+                // 5. 遷移するかどうか判定するためのカウントを　+1
                 count += 1
-                // 3. 遷移するかどうか判定
+                // 6. 遷移するかどうか判定
                 if count >= nameList.count {
                     // 遷移する場合の処理
                     performSegue(withIdentifier: "ToLikedList", sender: self)
                 } else {
                     // 遷移しない場合
-                    // 1. 飛ばしたカードを最背面の元の場所に持ってくる
-                    camonCard()
-                    
-                    // 2. 最背面に行ったカードに、次表示する情報を入れる
-                    newCard()
-                    
-                    // 3. ベースカードの角度と位置を戻す処理
-                    resetCard()
-                    
-                    // 4. likeImageを隠す処理
-                    likeImage.isHidden = true
-                    
-                    // 5. 次のカードへ
+                    // 次のカードへ
                     listNum += 1    // 次のカードのリスト番号
                     nextListNum += 1    // 次のカードが最背面に行った時のリスト番号
                     selectedCardCount += 1
@@ -336,19 +299,19 @@ class ViewController: UIViewController {
             // ユーザーカードを左にとばす
             self.personList[self.selectedCardCount].center = CGPoint(x:self.personList[self.selectedCardCount].center.x - 500, y:self.personList[self.selectedCardCount].center.y)
         })
-        // 2. 遷移するかどうか判定するためのカウントを　+1
+        // 2. 飛ばしたカードを最背面の元の場所に持ってくる
+        camonCard()
+        // 3. 最背面に行ったカードに、次表示する情報を入れる
+        newCard()
+        // 4. 遷移するかどうか判定するためのカウントを　+1
         count += 1
-        // 3. 遷移するかどうか判定
+        // 5. 遷移するかどうか判定
         if count >= nameList.count {
             // 遷移する場合の処理
             performSegue(withIdentifier: "ToLikedList", sender: self)
         } else {
             // 遷移しない場合
-            // 1. 飛ばしたカードを最背面の元の場所に持ってくる
-            camonCard()
-            // 2. 最背面に行ったカードに、次表示する情報を入れる
-            newCard()
-            // 3. 次のカードへ
+            // 次のカードへ
             listNum += 1    // 次のカードのリスト番号
             nextListNum += 1    // 次のカードが最背面に行った時のリスト番号
             selectedCardCount += 1
@@ -365,27 +328,25 @@ class ViewController: UIViewController {
         })
         // いいねリストに追加
         likedName.append(nameList[listNum])
-        // 2. 遷移するかどうか判定するためのカウントを　+1
+        // 2. 飛ばしたカードを最背面の元の場所に持ってくる
+        camonCard()
+        // 3. 最背面に行ったカードに、次表示する情報を入れる
+        newCard()
+        // 4. 遷移するかどうか判定するためのカウントを　+1
         count += 1
-        // 3. 遷移するかどうか判定
+        // 5. 遷移するかどうか判定
         if count >= nameList.count {
             // 遷移する場合の処理
             performSegue(withIdentifier: "ToLikedList", sender: self)
         } else {
             // 遷移しない場合
-            // 1. 飛ばしたカードを最背面の元の場所に持ってくる
-            camonCard()
-            // 2. 最背面に行ったカードに、次表示する情報を入れる
-            newCard()
-            // 3. 次のカードへ
+            // 次のカードへ
             listNum += 1    // 次のカードのリスト番号
             nextListNum += 1    // 次のカードが最背面に行った時のリスト番号
             selectedCardCount += 1
             selectedCardCount = count % 2    // 次のカード番号。0か1にしたいので2で割ったあまりにする。
         }
     }
-    
-    
     
     // さよならしたカードを最背面の元の場所に持ってくる処理
     func camonCard() {
