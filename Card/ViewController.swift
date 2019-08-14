@@ -73,8 +73,6 @@ class ViewController: UIViewController {
     // 遷移するかどうか判定するカウント
     var count = 0
     
-    
-    
     // ロード完了時に呼ばれる
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -140,8 +138,6 @@ class ViewController: UIViewController {
         self.view.sendSubviewToBack(person2)
     }
     
-    
-    
     // セグエによる遷移前に呼ばれる
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         
@@ -152,8 +148,6 @@ class ViewController: UIViewController {
             vc.likedName = likedName
         }
     }
-    
-    
     
     func resetPersonList() {
         // 5人の飛んで行ったビューを元の位置に戻す
@@ -171,9 +165,6 @@ class ViewController: UIViewController {
         // 角度を戻す
         baseCard.transform = .identity
     }
-    
-    
-    
     
     // スワイプ処理    
     @IBAction func swipeCard(_ sender: UIPanGestureRecognizer) {
@@ -194,9 +185,6 @@ class ViewController: UIViewController {
         // ユーザーカードに角度をつける
         personList[selectedCardCount].transform = CGAffineTransform(rotationAngle: xfromCenter / (view.frame.width / 2) * -0.785)
         
-        
-        
-        
         // 【like・badイメージ表示】について
         // likeImageの表示のコントロール
         if xfromCenter > 0 {
@@ -208,9 +196,6 @@ class ViewController: UIViewController {
             likeImage.image = #imageLiteral(resourceName: "よくないね")
             likeImage.isHidden = false
         }
-        
-        
-        
         
         // 【カードを飛ばすかどうか】について
         if sender.state == UIGestureRecognizer.State.ended {
@@ -291,7 +276,6 @@ class ViewController: UIViewController {
         }
     }
     
-    
     // よくないねボタン
     @IBAction func dislikeButtonTapped(_ sender: Any) {
         
@@ -303,7 +287,6 @@ class ViewController: UIViewController {
             self.personList[self.selectedCardCount].center = CGPoint(x :self.personList[self.selectedCardCount].center.x - 500,
                                                                      y :self.personList[self.selectedCardCount].center.y)
         }, completion: { finished in
-            print("おわったよ")
             // 2. 飛ばしたカードを最背面の元の場所に持ってくる
             self.camonCard()
             
@@ -322,10 +305,7 @@ class ViewController: UIViewController {
                 self.listNum += 1    // 次のカードのリスト番号
                 self.nextListNum += 1    // 次のカードが最背面に行った時のリスト番号
                 self.selectedCardCount = self.count % 2    // 次のカード番号。0か1にしたいので2で割ったあまりにする。
-                
-                print("count:\(self.count)")
             }
-            
         })
     }
     
@@ -360,7 +340,6 @@ class ViewController: UIViewController {
     
     // さよならしたカードを最背面の元の場所に持ってくる処理
     func camonCard() {
-        print("selectedCardCount:\(selectedCardCount)")
         // 最背面に
         self.view.sendSubviewToBack(personList[selectedCardCount])
         // 位置を戻す
@@ -400,27 +379,27 @@ class ViewController: UIViewController {
             }
         } else {
             if selectedCardCount == 0 {
-            // ビューの背景に色をつける
-            person1.backgroundColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
-            // ラベルに名前を表示
-            personName1.text = ""
-            // ラベルに職業を表示
-            personProfession1.text = ""
-            // ラベルに出身地を表示
-            personHometown1.text = ""
-            // 画像を表示
-            personImage1.isHidden = true
+                // ビューの背景に色をつける
+                person1.backgroundColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
+                // ラベルに名前を表示
+                personName1.text = ""
+                // ラベルに職業を表示
+                personProfession1.text = ""
+                // ラベルに出身地を表示
+                personHometown1.text = ""
+                // 画像を表示
+                personImage1.isHidden = true
             } else {
-            // ビューの背景に色をつける
-            person2.backgroundColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
-            // ラベルに名前を表示
-            personName2.text = ""
-            // ラベルに職業を表示
-            personProfession2.text = ""
-            // ラベルに出身地を表示
-            personHometown2.text = ""
-            // 画像を表示
-            personImage2.isHidden = true
+                // ビューの背景に色をつける
+                person2.backgroundColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
+                // ラベルに名前を表示
+                personName2.text = ""
+                // ラベルに職業を表示
+                personProfession2.text = ""
+                // ラベルに出身地を表示
+                personHometown2.text = ""
+                // 画像を表示
+                personImage2.isHidden = true
             }
         }
     }
