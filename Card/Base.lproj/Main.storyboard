@@ -128,7 +128,7 @@
                             </button>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="KFX-1B-6vk">
                                 <rect key="frame" x="0.0" y="88" width="375" height="540"/>
-                                <color key="backgroundColor" white="0.33333333333333331" alpha="0.40857769691780821" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <gestureRecognizers/>
                                 <connections>
                                     <outletCollection property="gestureRecognizers" destination="F3q-hx-N0J" appends="YES" id="Xr9-JV-ZGh"/>
