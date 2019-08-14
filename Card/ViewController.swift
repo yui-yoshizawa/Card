@@ -68,7 +68,7 @@ class ViewController: UIViewController {
     ]
     
     // 「いいね」をされた名前の配列
-    var likedName: [String] = []
+    var likedNameList: [String] = []
     
     // 遷移するかどうか判定するカウント
     var count = 0
@@ -83,10 +83,6 @@ class ViewController: UIViewController {
     
     // view表示前に呼ばれる（遷移すると戻ってくる度によばれる）
     override func viewWillAppear(_ animated: Bool) {
-        // カウント初期化
-        selectedCardCount = 0
-        // リスト初期化
-        likedName = []
         // 前面のビュー
         let name1 = nameList[count]
         // ビューの背景に色をつける
@@ -124,14 +120,14 @@ class ViewController: UIViewController {
     
     // 完全に遷移が行われ、スクリーン上からViewControllerが表示されなくなったときに呼ばれる
     override func viewDidDisappear(_ animated: Bool) {
-        // カードの番号
+        // カードの番号初期化
         selectedCardCount = 0
         // リストの番号
         listNum = 0
         // 最背面に行った時のリストの番号
         nextListNum = 2
         // いいねリスト初期化
-        likedName = []
+        likedNameList = []
         // 遷移するかどうか判定するカウント
         count = 0
         // person2を最背面にする
@@ -145,7 +141,7 @@ class ViewController: UIViewController {
             let vc = segue.destination as! LikedListTableViewController
             
             // LikedListTableViewControllerのlikedName(左)にViewCountrollewのLikedName(右)を代入
-            vc.likedName = likedName
+            vc.likedName = likedNameList
         }
     }
     
@@ -224,7 +220,6 @@ class ViewController: UIViewController {
                     // 次のカードへ
                     listNum += 1    // 次のカードのリスト番号
                     nextListNum += 1    // 次のカードが最背面に行った時のリスト番号
-                    selectedCardCount += 1
                     selectedCardCount = count % 2    // 次のカード番号。0か1にしたいので2で割ったあまりにする。
                 }
                 
@@ -235,7 +230,10 @@ class ViewController: UIViewController {
                     self.personList[self.selectedCardCount].center = CGPoint(x: self.personList[self.selectedCardCount].center.x + 500, y :self.personList[self.selectedCardCount].center.y)
                 })
                 // いいねリストに追加
-                likedName.append(nameList[listNum])
+                if likedNameList.contains(nameList[listNum]) {
+                } else {
+                    likedNameList.append(nameList[listNum])
+                }
                 // 1. 飛ばしたカードを最背面の元の場所に持ってくる
                 camonCard()
                 // 2. 最背面に行ったカードに、次表示する情報を入れる
@@ -255,12 +253,11 @@ class ViewController: UIViewController {
                     // 次のカードへ
                     listNum += 1    // 次のカードのリスト番号
                     nextListNum += 1    // 次のカードが最背面に行った時のリスト番号
-                    selectedCardCount += 1
                     selectedCardCount = count % 2    // 次のカード番号。0か1にしたいので2で割ったあまりにする。
                 }
                 
             } else {
-                // ☆【カードを飛ばさない場合】
+                // 【カードを飛ばさない場合】
                 // アニメーションをつける
                 UIView.animate(withDuration: 0.5, animations: {
                     // ユーザーカードを元の位置に戻す
@@ -286,13 +283,11 @@ class ViewController: UIViewController {
             // ユーザーカードを左にとばす
             self.personList[self.selectedCardCount].center = CGPoint(x :self.personList[self.selectedCardCount].center.x - 500,
                                                                      y :self.personList[self.selectedCardCount].center.y)
-        }, completion: { finished in
+        }, completion: { finished in    // アニメーション終了後に下記の処理をする。これがないとアニメーションがうまくいかない。
             // 2. 飛ばしたカードを最背面の元の場所に持ってくる
             self.camonCard()
-            
             // 3. 最背面に行ったカードに、次表示する情報を入れる
             self.newCard()
-            
             // 4. 遷移するかどうか判定するためのカウントを　+1
             self.count += 1
             // 5. 遷移するかどうか判定
@@ -314,10 +309,14 @@ class ViewController: UIViewController {
         // 1. ユーザーカード / ベースカードの動きについて
         UIView.animate(withDuration: 0.5, animations: {
             //self.resetCard()
-            self.personList[self.selectedCardCount].center = CGPoint(x:self.personList[self.selectedCardCount].center.x + 500, y:self.personList[self.selectedCardCount].center.y)
+            self.personList[self.selectedCardCount].center = CGPoint(x:self.personList[self.selectedCardCount].center.x + 500,
+                                                                     y:self.personList[self.selectedCardCount].center.y)
         }, completion: { finished in
             // いいねリストに追加
-            self.likedName.append(self.nameList[self.listNum])
+            if self.likedNameList.contains(self.nameList[self.listNum]) {
+            } else {
+                self.likedNameList.append(self.nameList[self.listNum])
+            }
             // 2. 飛ばしたカードを最背面の元の場所に持ってくる
             self.camonCard()
             // 3. 最背面に行ったカードに、次表示する情報を入れる
@@ -350,7 +349,7 @@ class ViewController: UIViewController {
     
     // 最背面に行ったカードに、次表示する情報を入れる処理
     func newCard() {
-        if nextListNum  < nameList.count {
+        if nextListNum < nameList.count {
             // まだ表示するリストがある場合
             let name: String = nameList[nextListNum]
             // 表示するビューを管理する
