@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<VariablesViewState
+   version = "1.0">
+   <ContextStates>
+      <ContextState
+         contextName = "closure #2 in ViewController.dislikeButtonTapped(_:):ViewController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "self.selectedCardCount">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "ViewController.newCard():ViewController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "nameList.count">
+            </PersistentString>
+            <PersistentString
+               value = "nextListNum">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+   </ContextStates>
+</VariablesViewState>

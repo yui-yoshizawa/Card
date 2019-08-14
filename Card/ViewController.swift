@@ -38,7 +38,7 @@ class ViewController: UIViewController {
     var selectedCardCount: Int = 0
     // リストの番号
     var listNum: Int = 0
-    //
+    /// 次に表示するユーザーの番号
     var nextListNum: Int = 2
     
     let nameList: [String] = ["津田梅子","ジョージワシントン","ガリレオガリレイ","板垣退助","ジョン万次郎"]
@@ -294,68 +294,73 @@ class ViewController: UIViewController {
     
     // よくないねボタン
     @IBAction func dislikeButtonTapped(_ sender: Any) {
+        
         // 1. ユーザーカード / ベースカードの動きについて
         UIView.animate(withDuration: 0.5, animations: {
             // ベースカードをリセット
             self.resetCard()
             // ユーザーカードを左にとばす
-            self.personList[self.selectedCardCount].center = CGPoint(x:self.personList[self.selectedCardCount].center.x - 500, y:self.personList[self.selectedCardCount].center.y)
+            self.personList[self.selectedCardCount].center = CGPoint(x :self.personList[self.selectedCardCount].center.x - 500,
+                                                                     y :self.personList[self.selectedCardCount].center.y)
+        }, completion: { finished in
+            print("おわったよ")
+            // 2. 飛ばしたカードを最背面の元の場所に持ってくる
+            self.camonCard()
+            
+            // 3. 最背面に行ったカードに、次表示する情報を入れる
+            self.newCard()
+            
+            // 4. 遷移するかどうか判定するためのカウントを　+1
+            self.count += 1
+            // 5. 遷移するかどうか判定
+            if self.count >= self.nameList.count {
+                // 遷移する場合の処理
+                self.performSegue(withIdentifier: "ToLikedList", sender: self)
+            } else {
+                // 遷移しない場合
+                // 次のカードへ
+                self.listNum += 1    // 次のカードのリスト番号
+                self.nextListNum += 1    // 次のカードが最背面に行った時のリスト番号
+                self.selectedCardCount = self.count % 2    // 次のカード番号。0か1にしたいので2で割ったあまりにする。
+                
+                print("count:\(self.count)")
+            }
+            
         })
-        // 2. 飛ばしたカードを最背面の元の場所に持ってくる
-       // DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-           self.camonCard()
-       // }
-        // 3. 最背面に行ったカードに、次表示する情報を入れる
-        newCard()
-        // 4. 遷移するかどうか判定するためのカウントを　+1
-        count += 1
-        // 5. 遷移するかどうか判定
-        if count >= nameList.count {
-            // 遷移する場合の処理
-            performSegue(withIdentifier: "ToLikedList", sender: self)
-        } else {
-            // 遷移しない場合
-            // 次のカードへ
-            listNum += 1    // 次のカードのリスト番号
-            nextListNum += 1    // 次のカードが最背面に行った時のリスト番号
-            selectedCardCount += 1
-            selectedCardCount = count % 2    // 次のカード番号。0か1にしたいので2で割ったあまりにする。
-        }
     }
     
     // いいねボタン
     @IBAction func likeButtonTaped(_ sender: Any) {
         // 1. ユーザーカード / ベースカードの動きについて
         UIView.animate(withDuration: 0.5, animations: {
-            self.resetCard()
+            //self.resetCard()
             self.personList[self.selectedCardCount].center = CGPoint(x:self.personList[self.selectedCardCount].center.x + 500, y:self.personList[self.selectedCardCount].center.y)
-        })
-        // いいねリストに追加
-        likedName.append(nameList[listNum])
-        // 2. 飛ばしたカードを最背面の元の場所に持ってくる
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+        }, completion: { finished in
+            // いいねリストに追加
+            self.likedName.append(self.nameList[self.listNum])
+            // 2. 飛ばしたカードを最背面の元の場所に持ってくる
             self.camonCard()
-        }
-        // 3. 最背面に行ったカードに、次表示する情報を入れる
-        newCard()
-        // 4. 遷移するかどうか判定するためのカウントを　+1
-        count += 1
-        // 5. 遷移するかどうか判定
-        if count >= nameList.count {
-            // 遷移する場合の処理
-            performSegue(withIdentifier: "ToLikedList", sender: self)
-        } else {
-            // 遷移しない場合
-            // 次のカードへ
-            listNum += 1    // 次のカードのリスト番号
-            nextListNum += 1    // 次のカードが最背面に行った時のリスト番号
-            selectedCardCount += 1
-            selectedCardCount = count % 2    // 次のカード番号。0か1にしたいので2で割ったあまりにする。
-        }
+            // 3. 最背面に行ったカードに、次表示する情報を入れる
+            self.newCard()
+            // 4. 遷移するかどうか判定するためのカウントを　+1
+            self.count += 1
+            // 5. 遷移するかどうか判定
+            if self.count >= self.nameList.count {
+                // 遷移する場合の処理
+                self.performSegue(withIdentifier: "ToLikedList", sender: self)
+            } else {
+                // 遷移しない場合
+                // 次のカードへ
+                self.listNum += 1    // 次のカードのリスト番号
+                self.nextListNum += 1    // 次のカードが最背面に行った時のリスト番号
+                self.selectedCardCount = self.count % 2    // 次のカード番号。0か1にしたいので2で割ったあまりにする。
+            }
+        })
     }
     
     // さよならしたカードを最背面の元の場所に持ってくる処理
     func camonCard() {
+        print("selectedCardCount:\(selectedCardCount)")
         // 最背面に
         self.view.sendSubviewToBack(personList[selectedCardCount])
         // 位置を戻す
