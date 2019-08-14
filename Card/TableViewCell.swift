@@ -12,15 +12,10 @@ class TableViewCell: UITableViewCell {
     
     
     @IBOutlet weak var personImage: UIImageView!
-    
     @IBOutlet weak var personNameLabel: UILabel!
-    
     @IBOutlet weak var personProfessionLabel: UILabel!
-    
     @IBOutlet weak var personHometownLabel: UILabel!
     
-    
-
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code

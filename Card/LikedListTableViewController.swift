@@ -20,7 +20,7 @@ class LikedListTableViewController: UITableViewController {
         // （xibファイルから、最終的にnibファイルが作られる）
         // （nibファイルは、xibファイルと同じファイル名になる）
         // "TableViewCall"というファイルを読み込んで、"customCell"という名前で使えるようにしてね！ って意味。
-        self.tableView.register(UINib(nibName: "TableViewCell", bundle: nil), forCellReuseIdentifier: "customCell")
+        tableView.register(UINib(nibName: "TableViewCell", bundle: nil), forCellReuseIdentifier: "customCell")
     }
     
     // MARK: - Table view data source

@@ -32,7 +32,6 @@ class ViewController: UIViewController {
         ["personImage": "津田梅子", "personName": "津田梅子", "personProfession": "教師", "personHometown": "千葉"],
         ["personImage": "ガリレオガリレイ", "personName": "ガリレオガリレイ", "personProfession": "物理学者", "personHometown": "イタリア"],
         ["personImage": "ジョージワシントン", "personName": "ジョージワシントン", "personProfession": "大統領", "personHometown": "アメリカ"],
-        
         ["personImage": "板垣退助", "personName": "板垣退助", "personProfession": "議員", "personHometown": "高知"],
         ["personImage": "ジョン万次郎", "personName": "ジョン万次郎", "personProfession": "冒険家", "personHometown": "アメリカ"]
     ]
