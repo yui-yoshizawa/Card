@@ -29,6 +29,10 @@ class ViewController: UIViewController {
     @IBOutlet weak var personProfession2: UILabel!
     @IBOutlet weak var personHometown2: UILabel!
     
+    
+    @IBOutlet weak var likeButton: UIButton!
+    @IBOutlet weak var badButton: UIButton!
+    
     // ベースカードの中心
     var centerOfCard: CGPoint!
     
@@ -274,7 +278,7 @@ class ViewController: UIViewController {
     }
     
     // よくないねボタン
-    @IBAction func dislikeButtonTapped(_ sender: Any) {
+    @IBAction func dislikeButtonTapped(_ sender: UIButton) {
         
         // 1. ユーザーカード / ベースカードの動きについて
         UIView.animate(withDuration: 0.5, animations: {
@@ -302,10 +306,14 @@ class ViewController: UIViewController {
                 self.selectedCardCount = self.count % 2    // 次のカード番号。0か1にしたいので2で割ったあまりにする。
             }
         })
+        sender.isEnabled = false
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5, execute: {
+            sender.isEnabled = true
+        })
     }
     
     // いいねボタン
-    @IBAction func likeButtonTaped(_ sender: Any) {
+    @IBAction func likeButtonTaped(_ sender: UIButton) {
         // 1. ユーザーカード / ベースカードの動きについて
         UIView.animate(withDuration: 0.5, animations: {
             //self.resetCard()
@@ -334,6 +342,10 @@ class ViewController: UIViewController {
                 self.nextListNum += 1    // 次のカードが最背面に行った時のリスト番号
                 self.selectedCardCount = self.count % 2    // 次のカード番号。0か1にしたいので2で割ったあまりにする。
             }
+        })
+        sender.isEnabled = false
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5, execute: {
+            sender.isEnabled = true
         })
     }
     

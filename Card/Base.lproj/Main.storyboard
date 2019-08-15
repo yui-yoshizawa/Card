@@ -167,7 +167,9 @@
                     </view>
                     <navigationItem key="navigationItem" id="OAo-se-P3x"/>
                     <connections>
+                        <outlet property="badButton" destination="AdT-c5-q8I" id="qcT-OP-5Sr"/>
                         <outlet property="baseCard" destination="KFX-1B-6vk" id="kN8-3M-3dm"/>
+                        <outlet property="likeButton" destination="KiN-rk-NpW" id="qRd-Qx-HF9"/>
                         <outlet property="likeImage" destination="Njy-qQ-WMP" id="BEp-4f-DE6"/>
                         <outlet property="person1" destination="bIG-jh-6Gs" id="5pk-xZ-n3b"/>
                         <outlet property="person2" destination="Me7-7N-lAE" id="zLB-ia-IXM"/>
