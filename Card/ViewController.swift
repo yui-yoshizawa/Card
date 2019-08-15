@@ -234,8 +234,7 @@ class ViewController: UIViewController {
                     self.personList[self.selectedCardCount].center = CGPoint(x: self.personList[self.selectedCardCount].center.x + 500, y :self.personList[self.selectedCardCount].center.y)
                 })
                 // いいねリストに追加
-                if likedNameList.contains(nameList[listNum]) {
-                } else {
+                if likedNameList.contains(nameList[listNum]) == false {
                     likedNameList.append(nameList[listNum])
                 }
                 // 1. 飛ばしたカードを最背面の元の場所に持ってくる
@@ -321,8 +320,7 @@ class ViewController: UIViewController {
                                                                      y:self.personList[self.selectedCardCount].center.y)
         }, completion: { finished in
             // いいねリストに追加
-            if self.likedNameList.contains(self.nameList[self.listNum]) {
-            } else {
+            if self.likedNameList.contains(self.nameList[self.listNum]) == false {
                 self.likedNameList.append(self.nameList[self.listNum])
             }
             // 2. 飛ばしたカードを最背面の元の場所に持ってくる
