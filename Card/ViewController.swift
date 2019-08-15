@@ -36,13 +36,13 @@ class ViewController: UIViewController {
     // ベースカードの中心
     var centerOfCard: CGPoint!
     
-    // ユーザーカードの配列
+    /// ユーザーカードの配列
     var personList: [UIView] = []
-    // カードの番号
+    /// 2枚のユーザーカードの番号（0か1）
     var selectedCardCount: Int = 0
-    // リストの番号
+    /// 現在表示させているユーザーの配列番号
     var listNum: Int = 0
-    /// 次に表示するユーザーの番号
+    /// カードが最背面に行ったときに表示するユーザーの配列番号
     var nextListNum: Int = 2
     
     let nameList: [String] = ["津田梅子","ガリレオガリレイ","ジョージワシントン","板垣退助","ジョン万次郎"]
@@ -71,10 +71,10 @@ class ViewController: UIViewController {
         "ジョン万次郎": #colorLiteral(red: 0.9821062897, green: 0.8366400532, blue: 1, alpha: 1)
     ]
     
-    // 「いいね」をされた名前の配列
+    /// 「いいね」をされた名前の配列
     var likedNameList: [String] = []
     
-    // 遷移するかどうか判定するカウント
+    /// 遷移するかどうか判定するカウント
     var count = 0
     
     // ロード完了時に呼ばれる
